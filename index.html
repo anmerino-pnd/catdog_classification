@@ -10,7 +10,7 @@
     <style>
       #resultado {
         font-weight:  bold;
-        font-size:  2rem;
+        font-size:  6rem;
         text-align: center;
       }
 
@@ -25,9 +25,10 @@
     
     <main>
       <div class="px-4 py-2 my-2 text-center border-bottom">
-        <h1 class="display-5 fw-bold">Perros y Gatos</h1>
+        <h1 class="display-5 fw-bold">Perros y gatos</h1>
         <div class="col-lg-6 mx-auto">
-          <p class="lead mb-0">Clasificaci&oacute;n de imágenes usando la c&aacute;mara web utilizando Tensorflow.js</p>
+          <p class="lead mb-0">Clasificaci&oacute;n de imágenes (Perro o Gato) usando la c&aacute;mara web utilizando Tensorflow.js</p>
+          <p class="lead mb-4">El detalle puedes verlo en <a href="https://youtu.be/LRckH4U5ls8">este video</a></p>
         </div>
       </div>
 
@@ -49,9 +50,9 @@
 
       <div class="bg-dark text-secondary mt-5 px-4 py-2 text-center">
         <div class="py-5">
-          <h1 class="display-5 fw-bold text-white">MCD</h1>
+          <h1 class="display-5 fw-bold text-white">Ringa Tech</h1>
           <div class="col-lg-6 mx-auto">
-            <p class="fs-5 mb-4">Proyecto basado en <a href="https://youtube.com/RingaTech">el tutorial</a> de RingaTech</p>
+            <p class="fs-5 mb-4">Revisa <a href="https://youtube.com/RingaTech">mi canal</a> para videos de inteligencia artificial, programaci&oacute;n, etc.</p>
           </div>
         </div>
       </div>
@@ -61,7 +62,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.18.0/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js"></script>
 
     <script type="text/javascript">
 
@@ -78,7 +79,7 @@
 
       (async () => {
           console.log("Cargando modelo...");
-          model = await tf.loadLayersModel('./model/model.json');
+          modelo = await tf.loadLayersModel("./model/model.json");
           console.log("Modelo cargado...");
       })();
 
@@ -86,7 +87,7 @@
           mostrarCamara();
       }
 
-      async function mostrarCamara() {
+      function mostrarCamara() {
 
           var opciones = {
               audio: false,
@@ -95,7 +96,7 @@
               }
           };
 
-          if(await navigator.mediaDevices.getUserMedia) {
+          if(navigator.mediaDevices.getUserMedia) {
               navigator.mediaDevices.getUserMedia(opciones)
                   .then(function(stream) {
                       currentStream = stream;
@@ -140,8 +141,8 @@
               })
       }
 
-      async function predecir() {
-        if (modelo != null) {
+      function predecir() {
+          if (modelo != null) {
               //Pasar canvas a version 150x150
               resample_single(canvas, 150, 150, othercanvas);
 
@@ -162,7 +163,7 @@
               }
 
               arr = [arr]; //Meter el arreglo en otro arreglo por que si no tio tensorflow se enoja >:(
-              //Nah basicamente Debe estar en un arreglo nuevo en el indice 0, por ser un tensor4d en forma 1, 224, 224, 1
+              //Nah basicamente Debe estar en un arreglo nuevo en el indice 0, por ser un tensor4d en forma 1, 150, 150, 1
               var tensor4 = tf.tensor4d(arr);
               var resultados = modelo.predict(tensor4).dataSync();
               var mayorIndice = resultados.indexOf(Math.max.apply(null, resultados));
